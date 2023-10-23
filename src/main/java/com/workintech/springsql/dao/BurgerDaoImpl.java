@@ -55,8 +55,8 @@ public class BurgerDaoImpl implements BurgerDao{
 
     @Override
     public List<Burger> findByContent(String content) {
-        TypedQuery<Burger> query = entityManager.createQuery("SELECT b fron Burger b WHERE b.contents like " +
-                "CONCAT('%':content'%')ORDER by b.name asc", Burger.class);
+        TypedQuery<Burger> query = entityManager.createQuery("SELECT b FROM Burger b WHERE b.contents like " +
+                "CONCAT('%', :content, '%')ORDER by b.name asc", Burger.class);
         query.setParameter("content",content);
 
 
