@@ -1,12 +1,14 @@
 package com.workintech.springsql.controller;
 
 import com.workintech.springsql.dao.BurgerDao;
+import com.workintech.springsql.dto.BurgerResponse;
 import com.workintech.springsql.entity.Burger;
 import com.workintech.springsql.entity.Enums.BreadType;
-import jakarta.persistence.GeneratedValue;
+import com.workintech.springsql.util.BurgerResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,10 +27,11 @@ public class BurgerController {
         return burgerDao.save(burger);
     }
     @GetMapping("/")
-    public List<Burger> findAll (){
-
-        return burgerDao.findAll();
+    public List<BurgerResponse> findAll (){
+   List <Burger> burgers = burgerDao.findAll();
+        return BurgerResponseEntity.burgerToResponse(burgers);
     }
+
     @GetMapping("/{id}")
     public Burger findById (@PathVariable int id){
 
@@ -41,8 +44,8 @@ public class BurgerController {
 
     }
     @DeleteMapping("/{id}")
-    public Burger remove (@PathVariable int id){
-       return burgerDao.remove(id);
+    public BurgerResponse remove (@PathVariable int id){
+       return new BurgerResponse(burgerDao.remove(id).getName(),burgerDao.remove(id).getPrice());
 
     }
     @GetMapping("/findByContent/{content}")
